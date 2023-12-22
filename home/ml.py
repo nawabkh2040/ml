@@ -1,11 +1,22 @@
+# ml.py
+
 import tensorflow as tf
 from tensorflow.keras.models import Model
-from tensorflow.keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array
-from tensorflow.keras.applications.xception import Xception, preprocess_input
-from tensorflow.keras.layers import Flatten, Dense
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.preprocessing.image import ImageDataGenerator,load_img
+from tensorflow.keras.applications.xception import Xception
+from tensorflow.keras.applications.xception import preprocess_input, decode_predictions
+from tensorflow.keras.preprocessing import image
+from glob import glob
 import numpy as np
+from tensorflow.keras.layers import  Dense
+from tensorflow.keras.layers import Flatten
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+
 
 def load_and_compile_model(batch_size=32, subset_fraction=1.0):
+    # Define the ImageDataGenerator for training data
     train_datagen = ImageDataGenerator(
         rescale=1./255,
         shear_range=0.2,
@@ -27,13 +38,6 @@ def load_and_compile_model(batch_size=32, subset_fraction=1.0):
         subset='training'  # Use the training subset
     )
 
-    testing_set = train_datagen.flow_from_directory(
-        testing_dir,
-        target_size=(299, 299),
-        batch_size=batch_size,
-        class_mode='categorical'
-    )
-
     imageSize = [299, 299]
     xception = Xception(input_shape=imageSize + [3], weights='imagenet', include_top=False)
 
@@ -48,10 +52,10 @@ def load_and_compile_model(batch_size=32, subset_fraction=1.0):
     # Compile the model
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-    return model, training_set, testing_set
+    return model, training_set
 
 def train_model(model, training_set, epochs=5):
-    # Adjust the number of epochs and other parameters as needed
+    # Train the model
     model.fit(training_set, epochs=epochs)
 
 def make_predictions(model, img_path):
@@ -65,10 +69,3 @@ def make_predictions(model, img_path):
     predictions = model.predict(img_array)
 
     return predictions
-
-# Example usage:
-model, training_set, _ = load_and_compile_model(batch_size=32, subset_fraction=0.5)
-train_model(model, training_set)
-image_path = r'C:\Users\HP\Desktop\ml_project\eye\eye\upload_images\image.jpg'
-predictions = make_predictions(model, image_path)
-print(predictions)
