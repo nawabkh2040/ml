@@ -16,7 +16,6 @@ def load_and_compile_model(batch_size=32, subset_fraction=1.0):
         horizontal_flip=True,
         validation_split=1.0 - subset_fraction  # Use a subset of the training data
     )
-
     # Set the paths to your training and testing directories
     training_dir = r'C:\Users\HP\Desktop\ml_project\eye\preprocessed dataset\preprocessed dataset\training'
     testing_dir = r'C:\Users\HP\Desktop\ml_project\eye\preprocessed dataset\preprocessed dataset\testing'
