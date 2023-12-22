@@ -45,13 +45,11 @@ def sign_up(request):
 
 
 from .ml import load_and_compile_model, train_model, make_predictions
-
 # model, training_set, testing_set = load_and_compile_model()
 import os
 # Create the directory if it doesn't exist
 directory = 'C:/Users/HP/Desktop/ml_project/eye/eye/upload_images/'
 os.makedirs(directory, exist_ok=True)
-
 # model, training_set, testing_set = load_and_compile_model()
 from .ml import load_and_compile_model, train_model, make_predictions
 def prediction(request):
@@ -59,26 +57,20 @@ def prediction(request):
         if request.method == "POST" and request.FILES.get('photo'):
             # Get the uploaded file
             uploaded_file = request.FILES.get('photo')
-
             # Save the file to a temporary location
             temp_path = 'C:/Users/HP/Desktop/ml_project/eye/eye/upload_images/image.jpg'
             with open(temp_path, 'wb') as f:
                 for chunk in uploaded_file.chunks():
                     f.write(chunk)
-
             model, training_set = load_and_compile_model(batch_size=32, subset_fraction=0.5)
-
             # Train the model (optional)
             train_model(model, training_set, epochs=5)
-
             # Make predictions
             predictions = make_predictions(model, temp_path)
-
             context = {
                 'image_path': temp_path,
                 'predictions': predictions,
             }
-
             return render(request, 'home/prediction.html', context)
 
         return render(request, 'home/prediction.html')

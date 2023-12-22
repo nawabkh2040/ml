@@ -1,19 +1,11 @@
 # ml.py
-
 import tensorflow as tf
 from tensorflow.keras.models import Model
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.preprocessing.image import ImageDataGenerator,load_img
+from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array
 from tensorflow.keras.applications.xception import Xception
-from tensorflow.keras.applications.xception import preprocess_input, decode_predictions
-from tensorflow.keras.preprocessing import image
-from glob import glob
+from tensorflow.keras.applications.xception import preprocess_input
 import numpy as np
-from tensorflow.keras.layers import  Dense
-from tensorflow.keras.layers import Flatten
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-
-
 
 def load_and_compile_model(batch_size=32, subset_fraction=1.0):
     # Define the ImageDataGenerator for training data
